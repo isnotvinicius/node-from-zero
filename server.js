@@ -17,8 +17,10 @@ server.post('/videos', (request, reply) => {
   return reply.status(201).send()
 })
 
-server.get('/videos', () => {
-  const videos = database.list()
+server.get('/videos', (request) => {
+  const search = request.query.search
+
+  const videos = database.list(search)
   
   return videos
 })
@@ -27,7 +29,7 @@ server.put('/videos/:id', (request, reply) => {
   const videoId = request.params.id
   const { title, description, duration } = request.body
 
-  const video = database.update(videoId, {
+  database.update(videoId, {
     title,
     description,
     duration,
